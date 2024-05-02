@@ -26,7 +26,7 @@
     }
 
     .icon-btn{
-      @apply text-xl text-slate-300 cursor-wait hover:text-primary;
+      @apply text-xl text-slate-300 cursor-pointer hover:text-primary;
     }
 
     .input-label{

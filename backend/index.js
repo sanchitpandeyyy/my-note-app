@@ -77,7 +77,7 @@ app.post("/create-account", async (req, res) => {
 });
 
 //-----------login-----------------
-app.post("/login",  async (req, res) => {
+app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     if (!email) {
@@ -117,7 +117,7 @@ app.post("/login",  async (req, res) => {
 })
 
 //----------Get User-----------
-app.get("/get-user",authenticateToken, async (req, res) => {
+app.get("/get-user", authenticateToken, async (req, res) => {
     const { user } = req.user;
 
     const isUser = await User.findOne({ _id: user._id });
@@ -127,12 +127,12 @@ app.get("/get-user",authenticateToken, async (req, res) => {
     }
 
     return res.json({
-        user: { 
+        user: {
             fullName: isUser.fullName,
-             email: isUser.email,
-              "_id": isUser._id,
-               createdOn: isUser.createdOn 
-            },
+            email: isUser.email,
+            "_id": isUser._id,
+            createdOn: isUser.createdOn
+        },
         message: "",
     })
 })
@@ -172,7 +172,7 @@ app.post("/add-note", authenticateToken, async (req, res) => {
 })
 
 //-----------Edit Note------------------------
-app.post("/edit-note/:noteId", authenticateToken, async (req, res) => {
+app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
     const noteId = req.params.noteId;
     const { title, content, tags, isPinned } = req.body;
     const { user } = req.user;
@@ -288,6 +288,45 @@ app.put('/update-note-pinned/:noteId', authenticateToken, async (req, res) => {
 
     }
 })
+
+
+//----------Search Notes-------------------
+app.get('/search-notes/', authenticateToken, async (req, res) => {
+
+    const { user } = req.user;
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(404).json({ error: true, message: "Search query is required" });
+    }
+
+
+    try {
+        const matchingNotes = await Note.find({
+            userId: user._id,
+            $or: [
+                { title: { $regex: new RegExp(query, "i") } },
+                { content: { $regex: new RegExp(query, "i") } },
+            ],
+        });
+        return res.json({
+            error: false,
+            notes: matchingNotes,
+            message: "Notes matching query is retrieved successfully"
+        })
+
+
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: "Internal Server Error",
+        })
+
+    }
+})
+
+
+
 
 app.listen(8000);
 
