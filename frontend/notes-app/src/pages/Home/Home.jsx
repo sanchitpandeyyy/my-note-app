@@ -27,6 +27,7 @@ const Home = () => {
   });
 
   const [userInfo, setUserInfo] = useState(null);
+
   const [allNotes, setAllNotes] = useState([]);
 
   const [isSearch, setIsSearch] = useState(false);
@@ -123,7 +124,7 @@ const Home = () => {
     getAllNotes();
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     getAllNotes();
     getUserInfo();
 

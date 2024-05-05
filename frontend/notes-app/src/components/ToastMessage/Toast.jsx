@@ -11,7 +11,7 @@ const Toast = ({ isShown, message, type, onClose }) => {
     return ()=>{
       clearTimeout(timeoutId);
     };
-  },[onClose])
+  },[])
 
 
   return (
