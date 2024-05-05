@@ -27,7 +27,7 @@ const Home = () => {
   });
 
   const [userInfo, setUserInfo] = useState(null);
-  console.log(userInfo)
+
   const [allNotes, setAllNotes] = useState([]);
 
   const [isSearch, setIsSearch] = useState(false);
